@@ -3,7 +3,12 @@ import React from 'react';
 class UnregisteredPlayer extends React.Component {
   render() {
     return (
-      <li>{this.props.name}</li>
+      <tr>
+        <td>{this.props.name}</td>
+        <td>{this.props.age}</td>
+        <td><button>Register</button></td>
+        <td><button>Sell</button></td>
+      </tr>
     );
   }
 }

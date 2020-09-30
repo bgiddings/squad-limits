@@ -1,6 +1,5 @@
 import React from 'react';
-import UnregisteredPlayer from './UnregisteredPlayer.js';
-import RegisteredPlayer from './RegisteredPlayer.jsx';
+import PlayerTable from './PlayerTable.jsx';
 import {appendScript} from '../utils/appendscript.js';
 
 const FOREIGN = 0;
@@ -64,6 +63,7 @@ class UnregisteredList extends React.Component {
       reg_nation_trained: [],
       reg_club_trained: [],
       u21_club_trained: [],
+      sold: [],
     };
   }
 
@@ -185,123 +185,125 @@ class UnregisteredList extends React.Component {
 
   sellPlayer(name) {
     // move a player from unregistered list to sold list
+    let idx = this.state.unregistered.findIndex(e => e.name === name);
+    if (idx !== -1) {
+      let player = this.state.unregistered[idx];
+      let local_unregistered = [...this.state.unregistered];
+      let local_sold = [...this.state.sold];
+
+      local_unregistered.splice(idx, 1);
+      local_sold.push(player);
+
+      this.setState({
+        ...this.state,
+        unregistered: local_unregistered,
+        sold: local_sold,
+      });
+    }
   }
 
   unsellPlayer(name) {
     // move a player from sold list to unregistered list
+    let idx = this.state.sold.findIndex(e => e.name === name);
+    if (idx !== -1) {
+      let player = this.state.sold[idx];
+      let local_unregistered = [...this.state.unregistered];
+      let local_sold = [...this.state.sold];
+
+      local_sold.splice(idx, 1);
+      local_unregistered.push(player);
+
+      this.setState({
+        ...this.state,
+        unregistered: local_unregistered,
+        sold: local_sold,
+      });
+    }
+  }
+
+  listAll() {
+    const unreg = this.state.unregistered.map(e => "* " + e.name).join("\n");
+    const foreign = this.state.reg_foreign.map(e => "* " + e.name).join("\n");
+    const nation = this.state.reg_nation_trained.map(e => "* " + e.name).join("\n");
+    const club = this.state.reg_club_trained.map(e => "* " + e.name).join("\n");
+    const u21 = this.state.u21_club_trained.map(e => "* " + e.name).join("\n");
+    const sold = this.state.sold.map(e => "* " + e.name).join("\n");
+
+    let retval = "";
+
+    if (unreg.length > 0) {
+      retval += "Unregistered:\n\n" + unreg + "\n\n";
+    }
+
+    if (foreign.length > 0) {
+      retval += "Registered Foreign Players:\n\n" + foreign + "\n\n";
+    }
+
+    if (nation.length > 0) {
+      retval += "Registered Nation-Trained Players:\n\n" + nation + "\n\n";
+    }
+
+    if (club.length > 0) {
+      retval += "Registered Club-Trained Players:\n\n" + club + "\n\n";
+    }
+
+    if (u21.length > 0) {
+      retval += "U21 not-recently-joined Players (no registration needed):\n\n" + u21 + "\n\n";
+    }
+
+    if (sold.length > 0) {
+      retval += "Sold / Loaned Players:\n\n" + sold + "\n\n";
+    }
+
+    return retval;
   }
 
   render() {
-    // const unreg_list = this.state.unregistered.map(e => <li>{e[0]}</li>);
-    const unreg_list = this.state.unregistered.map(
-      e => <UnregisteredPlayer key={e.name} name={e.name} age={e.age} reg={this.registerPlayer.bind(this)} sell={this.sellPlayer.bind(this)} />
-    );
-    const reg_foreign = this.state.reg_foreign.map(
-      e => <RegisteredPlayer key={e.name} name={e.name} age={e.age} unreg={this.unregisterPlayer.bind(this)} />
-    );
-    const reg_nation_trained = this.state.reg_nation_trained.map(
-      e => <RegisteredPlayer key={e.name} name={e.name} age={e.age} unreg={this.unregisterPlayer.bind(this)} />
-    );
-    const reg_club_trained = this.state.reg_club_trained.map(
-      e => <RegisteredPlayer key={e.name} name={e.name} age={e.age} unreg={this.unregisterPlayer.bind(this)} />
-    );
-    const u21_club_trained = this.state.u21_club_trained.map(
-      e => <RegisteredPlayer key={e.name} name={e.name} age={e.age} unreg={this.unregisterPlayer.bind(this)} />
-    );
     const float_left = {
       float: "left"
     };
 
+    const clear_left = {
+      clear: "left"
+    };
+
+    const text_list = this.listAll();
+
     return (
       <div>
         <div style={float_left}>
-          <table className="sortable">
-            <caption>Unregistered players</caption>
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Age</th>
-                <th>Register</th>
-                <th>Sell</th>
-              </tr>
-            </thead>
-            <tbody>
-              {unreg_list}
-            </tbody>
-          </table>
+          <PlayerTable player_type="Unregistered"
+                       list={this.state.unregistered}
+                       reg={this.registerPlayer.bind(this)}
+                       sell={this.sellPlayer.bind(this)} />
         </div>
         <div style={float_left}>
-          <table className="sortable">
-            <caption>Registered foreign players ({reg_foreign.length}/17)</caption>
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Age</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
-              {reg_foreign}
-            </tbody>
-          </table>
-          <table className="sortable">
-            <caption>Registered nation-trained players ({reg_nation_trained.length}/4)</caption>
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Age</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
-              {reg_nation_trained}
-            </tbody>
-          </table>
-          <table className="sortable">
-            <caption>Registered club-trained players ({reg_club_trained.length}/4)</caption>
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Age</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
-              {reg_club_trained}
-            </tbody>
-          </table>
-          <table className="sortable">
-            <caption>U21 club-trained players</caption>
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Age</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
-              {u21_club_trained}
-            </tbody>
-          </table>
+          <PlayerTable player_type="Registered foreign"
+                       list={this.state.reg_foreign}
+                       unreg={this.unregisterPlayer.bind(this)}
+                       max="17" />
+          <PlayerTable player_type="Registered nation-trained"
+                       list={this.state.reg_nation_trained}
+                       unreg={this.unregisterPlayer.bind(this)}
+                       max="4" />
+          <PlayerTable player_type="Registered club-trained"
+                       list={this.state.reg_club_trained}
+                       unreg={this.unregisterPlayer.bind(this)}
+                       max="4" />
+          <PlayerTable player_type="U21 club-trained"
+                       list={this.state.u21_club_trained}
+                       unreg={this.unregisterPlayer.bind(this)}
+                       max="&infin;" />
         </div>
         <div style={float_left}>
-          <table className="sortable">
-            <caption>Sold / loaned players</caption>
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Age</th>
-                <th>Unsell</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>joe</td>
-                <td>01</td>
-                <td>XX</td>
-              </tr>
-            </tbody>
-          </table>
+          <PlayerTable player_type="Sold / Loaned"
+                       list={this.state.sold}
+                       unsell={this.unsellPlayer.bind(this)} />
+        </div>
+        <div style={clear_left}>
+          <textarea rows="20" cols="50"
+                    value={text_list}
+                    readOnly></textarea>
         </div>
       </div>
     );

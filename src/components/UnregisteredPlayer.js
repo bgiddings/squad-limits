@@ -8,7 +8,6 @@ class UnregisteredPlayer extends React.Component {
   }
 
   handleRegister(e) {
-    console.log("register");
     this.props.reg(this.props.name);
   }
 
@@ -23,7 +22,7 @@ class UnregisteredPlayer extends React.Component {
         <td>{this.props.name}</td>
         <td>{this.props.age}</td>
         <td><button onClick={this.handleRegister}>Register</button></td>
-        <td><button onClick={this.handleSell}>Sell</button></td>
+        <td><button onClick={this.handleSell}>Sell / Loan</button></td>
       </tr>
     );
   }

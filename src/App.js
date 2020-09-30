@@ -5,7 +5,8 @@ import UnregisteredList from './components/UnregisteredList.js';
 function App() {
   return (
     <div className="App">
-      <div>[<UnregisteredList />]</div>
+      <h1>Register Arsenal Players</h1>
+      <div><UnregisteredList /></div>
     </div>
   );
 }

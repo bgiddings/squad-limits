@@ -1,35 +1,34 @@
 import React from 'react';
-import UnregisteredPlayer from './UnregisteredPlayer.js';
-import RegisteredPlayer from './RegisteredPlayer.jsx';
+import Player from './Player.jsx';
 
 
 const PlayerTable = (props) => {
 
   let list;
 
-  if (props.unreg) {
+  if ((props.reg) && (props.sell)) {
     list = props.list.map(
-      e => <RegisteredPlayer key={e.name}
-                             name={e.name}
-                             age={e.age}
-                             unreg={props.unreg} />
+      e => <Player key={e.name}
+      name={e.name}
+      age={e.age}
+      reg={props.reg}
+      sell={props.sell} />
     );
   }
-  else if ((props.reg) && (props.sell)) {
+  else if (props.unreg) {
     list = props.list.map(
-      e => <UnregisteredPlayer key={e.name}
-                               name={e.name}
-                               age={e.age}
-                               reg={props.reg}
-                               sell={props.sell} />
+      e => <Player key={e.name}
+                   name={e.name}
+                   age={e.age}
+                   unreg={props.unreg} />
     );
   }
   else if (props.unsell) {
     list = props.list.map(
-      e => <RegisteredPlayer key={e.name}
-                             name={e.name}
-                             age={e.age}
-                             unsell={props.unsell} />
+      e => <Player key={e.name}
+                   name={e.name}
+                   age={e.age}
+                   unsell={props.unsell} />
     );
   }
 

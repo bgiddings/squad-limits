@@ -24,6 +24,7 @@ class UnregisteredList extends React.Component {
     addPlayer("Cedric Soares", 29, FOREIGN);
     addPlayer("Dani Ceballos", 24, FOREIGN);
     addPlayer("David Luiz", 33, FOREIGN);
+    addPlayer("David Raya", 25, HOMEGROWN);
     addPlayer("Eddie Nketiah", 21, HOMEGROWN | CLUB_TRAINED);
     addPlayer("Emile Smith Rowe", 20, HOMEGROWN | CLUB_TRAINED);
     addPlayer("Gabriel Magalhães", 22, FOREIGN);
@@ -222,12 +223,12 @@ class UnregisteredList extends React.Component {
   }
 
   listAll() {
-    const unreg = this.state.unregistered.map(e => "* " + e.name).join("\n");
-    const foreign = this.state.reg_foreign.map(e => "* " + e.name).join("\n");
-    const nation = this.state.reg_nation_trained.map(e => "* " + e.name).join("\n");
-    const club = this.state.reg_club_trained.map(e => "* " + e.name).join("\n");
-    const u21 = this.state.u21_club_trained.map(e => "* " + e.name).join("\n");
-    const sold = this.state.sold.map(e => "* " + e.name).join("\n");
+    const unreg = this.state.unregistered.map(e => "* " + e.name).sort().join("\n");
+    const foreign = this.state.reg_foreign.sort().map(e => "* " + e.name).sort().join("\n");
+    const nation = this.state.reg_nation_trained.sort().map(e => "* " + e.name).sort().join("\n");
+    const club = this.state.reg_club_trained.sort().map(e => "* " + e.name).sort().join("\n");
+    const u21 = this.state.u21_club_trained.sort().map(e => "* " + e.name).sort().join("\n");
+    const sold = this.state.sold.sort().map(e => "* " + e.name).sort().join("\n");
 
     let retval = "";
 
@@ -260,11 +261,12 @@ class UnregisteredList extends React.Component {
 
   render() {
     const float_left = {
-      float: "left"
+      float: "left",
     };
 
     const clear_left = {
-      clear: "left"
+      float: "left",
+      clear: "left",
     };
 
     const text_list = this.listAll();
@@ -301,7 +303,7 @@ class UnregisteredList extends React.Component {
                        unsell={this.unsellPlayer.bind(this)} />
         </div>
         <div style={clear_left}>
-          <textarea rows="20" cols="50"
+          <textarea rows="20" cols="35"
                     value={text_list}
                     readOnly></textarea>
         </div>

@@ -33,7 +33,7 @@ class UnregisteredList extends React.Component {
     addPlayer("Gabriel Martinelli", 19, FOREIGN | RECENT_TRANSFER);
     addPlayer("Granit Xhaka", 27, FOREIGN);
     addPlayer("Hector Bellerin", 25, HOMEGROWN | CLUB_TRAINED);
-    addPlayer("Youssem Aouar", 22, FOREIGN);
+    addPlayer("Houssem Aouar", 22, FOREIGN);
     addPlayer("Joe Willock", 21, HOMEGROWN | CLUB_TRAINED);
     addPlayer("Kieran Tierney", 23, FOREIGN);
     addPlayer("Lucas Torreira", 24, FOREIGN);

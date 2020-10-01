@@ -1,3 +1,5 @@
+// Main panel
+
 import React from 'react';
 import PlayerTable from './PlayerTable.jsx';
 import {appendScript} from '../utils/appendscript.js';

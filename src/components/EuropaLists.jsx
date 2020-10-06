@@ -15,7 +15,11 @@ class UnregisteredList extends React.Component {
 
     let players = {};
     const addPlayer = (name, age, status) => {
-      players[name] = {name: name, age: age, status: status};
+      players[name] = {
+        name: name,
+        age: age,
+        status: status
+      };
     };
 
     addPlayer("Ainsley Maitland-Niles", 23, HOMEGROWN | CLUB_TRAINED);
